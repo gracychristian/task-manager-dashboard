@@ -7,11 +7,13 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import ProtectedRoute from './components/ProtectedRoute'
 import MainLayout from './layout/MainLayout'
+import { TaskProvider } from './context/TaskContext'
 
 function App() {
 
   return (
     <AuthProvider>
+      <TaskProvider>
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Navigate to="/login" />} />
@@ -25,6 +27,7 @@ function App() {
             {/* <Route path="*" element={<NotFound />} /> */}
           </Route>
         </Routes>
+      </TaskProvider>
     </AuthProvider>
   )
 }
