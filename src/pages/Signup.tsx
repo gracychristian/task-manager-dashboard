@@ -7,7 +7,7 @@ const Signup = () => {
     return (
         <AuthForm
             mode="signup"
-            onSubmit={(values) => signup(values.email, values.password)}
+            onSubmit={(values) => signup(values.username || "", values.email, values.password)}
         />
     );
 };

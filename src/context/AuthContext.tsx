@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 
 type User = {
+    username: string
     email: string
     password: string
 }
 type AuthContextType = {
     user: User | null,
     login: (email: string, password: string) => boolean
-    signup: (email: string, password: string) => boolean
+    signup: (username: string, email: string, password: string) => boolean
     logout: () => void
 }
 
@@ -32,12 +33,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return false
     }
 
-    const signup = (email: string, password: string) => {
+    const signup = (username: string, email: string, password: string) => {
         const users = JSON.parse(localStorage.getItem("users") || "[]") as User[];
         const existsUser = users.find((u) => u.email === email);
         if (existsUser) return false;
 
-        const newUser = { email, password };
+        const newUser = { username, email, password };
         users.push(newUser);
         localStorage.setItem("users", JSON.stringify(users));
         localStorage.setItem("loggedInUser", JSON.stringify(newUser));
@@ -58,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 }
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within an AuthProvider");
-  return context;
+    const context = useContext(AuthContext);
+    if (!context) throw new Error("useAuth must be used within an AuthProvider");
+    return context;
 };

@@ -1,6 +1,10 @@
+import DashboardHeader from "../components/DashboardHeader";
+
 const Dashboard = () => {
     return (
-        <h1>Dashboard</h1>
+        <div className="z-999 relative p-5">
+            <DashboardHeader />
+        </div>
     );
 }
 
