@@ -13,27 +13,29 @@ import { useTasks } from '../context/TaskContext';
 import type { Task } from '../types/task';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { priorityOptions, statusOptions } from './Tasks';
 import { X } from 'lucide-react';
+import { priorityOptions, statusOptions } from '../constants/constant';
 
 type FormModalProps = {
     open: boolean;
+    initialData?: Task;
     onClose: () => void;
 };
 
-const TaskFormModal = ({ open, onClose }: FormModalProps) => {
+const TaskFormModal = ({ open, initialData, onClose }: FormModalProps) => {
     const taskList = JSON.parse(localStorage.getItem("tasks") || "[]");
-    const { addTask } = useTasks();
+    const { addTask, updateTask } = useTasks();
 
     const formik = useFormik<Task>({
         initialValues: {
-            id: "",
-            title: "",
-            description: "",
-            status: null,
-            priority: null,
-            dueDate: ""
+            id: initialData?.id || "",
+            title: initialData?.title || "",
+            description: initialData?.description || "",
+            status: initialData?.status || null,
+            priority: initialData?.priority || null,
+            dueDate: initialData?.dueDate || ""
         },
+        enableReinitialize: true,
         validationSchema: Yup.object({
             title: Yup.string().required('Title is required'),
             description: Yup.string().required('Description is required'),
@@ -45,17 +47,19 @@ const TaskFormModal = ({ open, onClose }: FormModalProps) => {
                 label: Yup.string().required(),
                 value: Yup.string().required(),
             }).required('Priority is required'),
+
             dueDate: Yup.string().required('Due date is required')
         }),
         onSubmit: (values: Task) => {
             const newTask = {
                 ...values,
-                id: dayjs().valueOf().toString(),
+                id: initialData?.id || dayjs().valueOf().toString(),
             };
 
             const isDuplicate = taskList.some(
                 (task: Task) =>
-                    task.title.trim().toLowerCase() === newTask.title.trim().toLowerCase()
+                    task.title.trim().toLowerCase() === newTask.title.trim().toLowerCase() &&
+                    task.id !== newTask.id
             );
 
             if (isDuplicate) {
@@ -63,10 +67,16 @@ const TaskFormModal = ({ open, onClose }: FormModalProps) => {
                 return;
             }
 
-            addTask(newTask);
+            if (initialData) {
+                updateTask(newTask);
+            } else {
+                addTask(newTask);
+            }
+
             formik.resetForm();
             onClose();
         }
+
     });
 
     return (
@@ -83,9 +93,13 @@ const TaskFormModal = ({ open, onClose }: FormModalProps) => {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                         <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                            <span className="text-white text-lg font-bold">+</span>
+                            <span className="text-white text-lg font-bold">
+                                {initialData ? '✎' : '+'}
+                            </span>
                         </div>
-                        <h2 className="text-xl font-semibold">Add New Task</h2>
+                        <h2 className="text-xl font-semibold">
+                            {initialData ? 'Edit Task' : 'Add New Task'}
+                        </h2>
                     </div>
                     <IconButton
                         onClick={onClose}
@@ -101,7 +115,11 @@ const TaskFormModal = ({ open, onClose }: FormModalProps) => {
                 <DialogContent className="p-6 bg-gradient-to-br from-gray-50 to-white">
                     <div className="space-y-6">
                         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-                            <InputField name="title" label="Title" formik={formik} />
+                            <InputField
+                                name="title"
+                                label="Title"
+                                formik={formik}
+                            />
                         </div>
 
                         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
@@ -171,8 +189,9 @@ const TaskFormModal = ({ open, onClose }: FormModalProps) => {
                             variant="contained"
                             className="normal-case px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all duration-200 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105"
                         >
-                            Add Task
+                            {initialData ? 'Update Task' : 'Add Task'}
                         </Button>
+
                     </div>
                 </DialogActions>
             </form>

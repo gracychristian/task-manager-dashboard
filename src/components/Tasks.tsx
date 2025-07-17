@@ -3,11 +3,30 @@ import TaskFormModal from "./TaskFormModal";
 import { Plus } from "lucide-react";
 import TaskList from "./TaskList";
 import { useTasks } from "../context/TaskContext";
+import type { Task } from "../types/task";
+import DeleteConfirmModal from "./DeleteConfirmModal";
 import { Button } from "@mui/material";
 
 const Tasks = () => {
-    const { tasks } = useTasks();
-    const [openFormModal, setOpenFormModal] = useState<boolean>(false);
+    const { tasks, deleteTask } = useTasks();
+    const [openFormModal, setOpenFormModal] = useState<boolean>(false)
+    const [selectedTask, setSelectedTask] = useState<Task>()
+    const [removeId, setRemoveId] = useState<string>("");
+    const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+
+    const handleEdit = (value: Task) => {
+        setOpenFormModal(true);
+        setSelectedTask(value);
+    }
+
+    const handleDelete = () => {
+        if (removeId) {
+            deleteTask(removeId);
+            setRemoveId("");
+        }
+        setOpenDeleteModal(false);
+    };
+
 
     return (
         <>
@@ -35,14 +54,28 @@ const Tasks = () => {
                 </Button>
             </div>
 
-            <TaskList taskList={tasks} />
+            <TaskList
+                taskList={tasks}
+                handleEdit={handleEdit}
+                handleDelete={(id) => {
+                    setRemoveId(id);
+                    setOpenDeleteModal(true);
+                }}
+            />
 
             <TaskFormModal
                 open={openFormModal}
-                onClose={() => setOpenFormModal(false)}
+                initialData={selectedTask}
+                onClose={() => { setOpenFormModal(false); setSelectedTask(undefined) }}
+            />
+
+            <DeleteConfirmModal
+                open={openDeleteModal}
+                onClose={() => setOpenDeleteModal(false)}
+                onConfirm={handleDelete}
             />
         </>
     );
-};
+}
 
 export default Tasks;

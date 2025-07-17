@@ -5,6 +5,8 @@ import { dummyTaskList } from "../utility/dummyTaskList";
 type TaskContextType = {
   tasks: Task[];
   addTask: (task: Task) => void;
+  updateTask: (task: Task) => void;
+  deleteTask: (id: string) => void;
 };
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
@@ -30,8 +32,20 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
     setTasks((prev) => [...prev, task]);
   };
 
+  const updateTask = (updatedTask: Task) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === updatedTask.id ? updatedTask : task
+      )
+    );
+  };
+
+  const deleteTask = (id: string) => {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  };
+
   return (
-    <TaskContext.Provider value={{ tasks, addTask }}>
+    <TaskContext.Provider value={{ tasks, addTask, updateTask, deleteTask }}>
       {children}
     </TaskContext.Provider>
   );
