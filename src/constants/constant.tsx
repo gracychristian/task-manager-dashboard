@@ -41,3 +41,9 @@ export const priorityConfig: Record<string, { color: string }> = {
     color: "bg-green-100 text-green-800 border-green-200",
   },
 };
+
+export const columns = [
+  { id: 'todo', title: 'To Do', color: 'bg-blue-50 border-blue-200' },
+  { id: 'in_progress', title: 'In Progress', color: 'bg-orange-50 border-orange-200' },
+  { id: 'done', title: 'Done', color: 'bg-green-50 border-green-200' }
+];

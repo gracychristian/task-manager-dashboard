@@ -1,39 +1,26 @@
-import { useEffect, useState } from "react";
+import TaskBoard from "./TaskBoard";
 import TaskFormModal from "./TaskFormModal";
-import { Plus } from "lucide-react";
-import TaskList from "./TaskList";
-import { useTasks } from "../context/TaskContext";
-import type { Task } from "../types/task";
 import DeleteConfirmModal from "./DeleteConfirmModal";
-import { Button } from "@mui/material";
 import TaskFilters from "./controls/TaskControls";
+import { useTasks } from "../context/TaskContext";
+import { useEffect, useState } from "react";
+import { Plus } from "lucide-react";
+import { Button } from "@mui/material";
+import type { FilterParams, Task } from "../types/task";
 
-const Tasks = () => {
-    const { tasks, deleteTask, searchTerm,
-        statusFilter,
-        priorityFilter,
-        dateRangeFilter } = useTasks();
+const TASKS_PER_PAGE = 3;
 
-    const [openFormModal, setOpenFormModal] = useState<boolean>(false)
-    const [selectedTask, setSelectedTask] = useState<Task>()
+export default function Tasks() {
+    const { tasks, updateTask, deleteTask, searchTerm, statusFilter, priorityFilter, dateRangeFilter } = useTasks();
+    const [openFormModal, setOpenFormModal] = useState(false);
+    const [selectedTask, setSelectedTask] = useState<Task>();
     const [removeId, setRemoveId] = useState<string>("");
-    const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [filteredTasks, setFilteredTasks] = useState<Task[]>(tasks);
+    const [draggedTask, setDraggedTask] = useState<Task | null>(null);
+    const [currentPage, setCurrentPage] = useState({ todo: 1, in_progress: 1, done: 1 });
 
     useEffect(() => {
-        const filters = {
-            searchTerm,
-            filterType: "",
-            status: statusFilter !== 'all' ? statusFilter : undefined,
-            priority: priorityFilter !== 'all' ? priorityFilter : undefined,
-            fromDate: dateRangeFilter.start ? dateRangeFilter.start.toDate() : null,
-            toDate: dateRangeFilter.end ? dateRangeFilter.end.toDate() : null,
-        };
-
-        if (filters.status) filters.filterType = "status";
-        else if (filters.priority) filters.filterType = "priority";
-        else if (filters.fromDate && filters.toDate) filters.filterType = "dueDate";
-
         applyFilters({
             searchTerm,
             status: statusFilter !== 'all' ? statusFilter : undefined,
@@ -41,14 +28,41 @@ const Tasks = () => {
             fromDate: dateRangeFilter.start?.toDate(),
             toDate: dateRangeFilter.end?.toDate(),
         });
+    }, [searchTerm, statusFilter, priorityFilter, dateRangeFilter, tasks]);
 
-    }, [searchTerm, statusFilter, priorityFilter, dateRangeFilter]);
+    const applyFilters = ({ searchTerm, status, priority, fromDate, toDate }: FilterParams) => {
+        let filtered = [...tasks];
 
+        if (searchTerm) {
+            const q = searchTerm.toLowerCase();
+            filtered = filtered.filter(task =>
+                task.title.toLowerCase().includes(q) ||
+                task.description.toLowerCase().includes(q)
+            );
+        }
 
-    const handleEdit = (value: Task) => {
+        if (status) {
+            filtered = filtered.filter(({status: s}) => s?.value === status);
+        }
+
+        if (priority) {
+            filtered = filtered.filter(({priority: p}) => p?.value === priority);
+        }
+
+        if (fromDate && toDate) {
+            filtered = filtered.filter(task => {
+                const due = new Date(task.dueDate);
+                return due >= fromDate && due <= toDate;
+            });
+        }
+
+        setFilteredTasks(filtered);
+    };
+
+    const handleEdit = (task: Task) => {
+        setSelectedTask(task);
         setOpenFormModal(true);
-        setSelectedTask(value);
-    }
+    };
 
     const handleDelete = () => {
         if (removeId) {
@@ -58,35 +72,26 @@ const Tasks = () => {
         setOpenDeleteModal(false);
     };
 
-    const applyFilters = (filters: any) => {
-        let filtered = [...tasks];
+    const handlePageChange = (status: string, page: number) => {
+        setCurrentPage(prev => ({ ...prev, [status]: page }));
+    };
 
-        if (filters.searchTerm) {
-            const q = filters.searchTerm.toLowerCase();
-            filtered = filtered.filter(task =>
-                task.title.toLowerCase().includes(q) ||
-                task.description.toLowerCase().includes(q)
-            );
+    const isOverdue = (dueDate: string, status: string) => {
+        if (status === 'done') return false;
+        return new Date(dueDate) < new Date();
+    };
+
+    const getStatusLabel = (status: string): string => {
+        switch (status) {
+            case "todo":
+                return "Todo";
+            case "in_progress":
+                return "In Progress";
+            case "done":
+                return "Done";
+            default:
+                return status;
         }
-
-        if (filters.status) {
-            filtered = filtered.filter(task => filters.status == "all" ? task : task.status?.value === filters.status);
-        }
-
-        if (filters.priority) {
-            filtered = filtered.filter(task => filters.priority == "all" ? task : task.priority?.value === filters.priority);
-        }
-
-        if (filters.fromDate && filters.toDate) {
-            const from = new Date(filters.fromDate);
-            const to = new Date(filters.toDate);
-            filtered = filtered.filter(task => {
-                const due = new Date(task.dueDate);
-                return due >= from && due <= to;
-            });
-        }
-
-        setFilteredTasks(filtered);
     };
 
     return (
@@ -97,47 +102,39 @@ const Tasks = () => {
                     onClick={() => setOpenFormModal(true)}
                     variant="contained"
                     startIcon={<Plus className="w-4 h-4" />}
-                    className="px-6 py-2 rounded-lg font-medium shadow-md shrink-0 transition-all duration-200"
-                    sx={{
-                        background: 'linear-gradient(45deg, #2563eb 30%, #1d4ed8 90%)',
-                        '&:hover': {
-                            background: 'linear-gradient(45deg, #1d4ed8 30%, #1e40af 90%)',
-                            transform: 'scale(1.05)',
-                            boxShadow: '0 10px 20px rgba(37, 99, 235, 0.3)',
-                        },
-                        '&:active': {
-                            transform: 'scale(0.95)',
-                        },
-                        textTransform: 'none',
-                        color: 'white',
-                    }}
+                    className="px-6 py-2 rounded-lg font-medium shadow-md"
+                    sx={{ /* gradient styling */ }}
                 >
                     Add Task
                 </Button>
             </div>
 
-            <TaskList
-                taskList={filteredTasks}
-                handleEdit={handleEdit}
-                handleDelete={(id) => {
-                    setRemoveId(id);
-                    setOpenDeleteModal(true);
+            <TaskBoard
+                filteredTasks={filteredTasks}
+                currentPage={currentPage}
+                tasksPerPage={TASKS_PER_PAGE}
+                onPageChange={handlePageChange}
+                onEdit={handleEdit}
+                onDelete={(id) => { setRemoveId(id); setOpenDeleteModal(true); }}
+                onDragStart={(e, task) => { setDraggedTask(task); e.dataTransfer.effectAllowed = "move"; }}
+                onDrop={(e, status) => {
+                    e.preventDefault();
+                    if (draggedTask) {
+                        updateTask({
+                            ...draggedTask,
+                            status: {
+                                label: getStatusLabel(status),
+                                value: status,
+                            },
+                        });
+                        setDraggedTask(null);
+                    }
                 }}
+                isOverdue={isOverdue}
             />
 
-            <TaskFormModal
-                open={openFormModal}
-                initialData={selectedTask}
-                onClose={() => { setOpenFormModal(false); setSelectedTask(undefined) }}
-            />
-
-            <DeleteConfirmModal
-                open={openDeleteModal}
-                onClose={() => setOpenDeleteModal(false)}
-                onConfirm={handleDelete}
-            />
+            <TaskFormModal open={openFormModal} initialData={selectedTask} onClose={() => { setOpenFormModal(false); setSelectedTask(undefined); }} />
+            <DeleteConfirmModal open={openDeleteModal} onClose={() => setOpenDeleteModal(false)} onConfirm={handleDelete} />
         </>
     );
 }
-
-export default Tasks;
