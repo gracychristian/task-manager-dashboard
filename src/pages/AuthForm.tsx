@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import InputField from "../components/InputField";
+import InputField from "../components/ui/InputField";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";

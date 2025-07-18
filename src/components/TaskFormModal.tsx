@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import InputField from './InputField';
+import InputField from './ui/InputField';
 import { useTasks } from '../context/TaskContext';
 import type { Task } from '../types/task';
 import { DatePicker } from '@mui/x-date-pickers';

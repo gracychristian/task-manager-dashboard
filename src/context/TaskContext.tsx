@@ -1,18 +1,37 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import type { Task } from "../types/task";
+import type { Task, TaskPriority, TaskStatus } from "../types/task";
 import { dummyTaskList } from "../utility/dummyTaskList";
+import { Dayjs } from 'dayjs';
 
 type TaskContextType = {
   tasks: Task[];
   addTask: (task: Task) => void;
   updateTask: (task: Task) => void;
   deleteTask: (id: string) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  statusFilter: TaskStatus | 'all';
+  setStatusFilter: (status: TaskStatus | 'all') => void;
+  priorityFilter: TaskPriority | 'all';
+  setPriorityFilter: (priority: TaskPriority | 'all') => void;
+  dateRangeFilter: { start: Dayjs | null; end: Dayjs | null };
+  setDateRangeFilter: (range: { start: Dayjs | null; end: Dayjs | null }) => void;
 };
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
 export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>(dummyTaskList);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<TaskStatus | 'all'>('all');
+  const [priorityFilter, setPriorityFilter] = useState<TaskPriority | 'all'>('all');
+  const [dateRangeFilter, setDateRangeFilter] = useState<{
+    start: Dayjs | null;
+    end: Dayjs | null;
+  }>({
+    start: null,
+    end: null,
+  });
 
   useEffect(() => {
     const storedTasks = localStorage.getItem("tasks");
@@ -45,7 +64,20 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, addTask, updateTask, deleteTask }}>
+    <TaskContext.Provider value={{
+      tasks,
+      addTask,
+      updateTask,
+      deleteTask,
+      searchTerm,
+      setSearchTerm,
+      statusFilter,
+      setStatusFilter,
+      priorityFilter,
+      setPriorityFilter,
+      dateRangeFilter,
+      setDateRangeFilter
+    }}>
       {children}
     </TaskContext.Provider>
   );

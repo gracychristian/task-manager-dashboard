@@ -2,7 +2,7 @@ import { Calendar, EditIcon, Trash2 } from "lucide-react";
 import type { Task } from "../types/task";
 import { IconButton } from "@mui/material";
 import { priorityConfig, statusConfig } from "../constants/constant";
-import TagBadge from "./TagBadge";
+import TagBadge from "./ui/TagBadge";
 
 interface TaskListProps {
     taskList: Task[];
