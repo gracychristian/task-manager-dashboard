@@ -4,10 +4,10 @@ import { useTasks } from '../../context/TaskContext';
 import { priorityOptions, statusOptions } from '../../constants/constant';
 import type { TaskPriority, TaskStatus } from '../../types/task';
 import { Card, CardContent, CardHeader, FormLabel, IconButton, Typography } from '@mui/material';
-import SearchField from '../ui/SearchField';
-import DatePickerField from '../ui/DatePickerField';
-import FilterSelect from './FilterSelect';
-import CustomButton from '../ui/CustomButton';
+import SearchField from '../common/SearchField';
+import DatePickerField from '../common/DatePickerField';
+import FilterSelect from '../common/FilterSelect';
+import CustomButton from '../common/CustomButton';
 
 export const TaskFilters: React.FC = () => {
     const {

@@ -1,6 +1,7 @@
-import { columns } from "../constants/constant";
+import { columns } from "../../constants/constant";
+import type { Task } from "../../types/task";
 import TaskColumn from "./TaskColumn";
-import type { Task } from "../types/task";
+
 
 type Props = {
     filteredTasks: Task[];

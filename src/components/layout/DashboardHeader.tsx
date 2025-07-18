@@ -1,7 +1,7 @@
 import { LogOut } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import CustomButton from "./ui/CustomButton";
+import { useAuth } from "../../context/AuthContext";
+import CustomButton from "../common/CustomButton";
 
 const DashboardHeader = () => {
     const { user, logout } = useAuth();

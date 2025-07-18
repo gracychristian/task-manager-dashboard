@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import CustomButton from "../ui/CustomButton";
+import CustomButton from "../common/CustomButton";
 
 interface PaginationControlsProps {
     page: number;

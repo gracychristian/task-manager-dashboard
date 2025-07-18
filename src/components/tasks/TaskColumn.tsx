@@ -1,6 +1,6 @@
 import TaskCard from "./TaskCard";
-import PaginationControls from "./controls/PaginationControls";
-import type { Task } from "../types/task";
+import type { Task } from "../../types/task";
+import PaginationControls from "../common/PaginationControls";
 
 type Props = {
     columnId: string;

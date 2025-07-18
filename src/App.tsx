@@ -5,9 +5,9 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
-import ProtectedRoute from './components/ProtectedRoute'
 import MainLayout from './layout/MainLayout'
 import { TaskProvider } from './context/TaskContext'
+import ProtectedRoute from './components/layout/ProtectedRoute'
 
 function App() {
 

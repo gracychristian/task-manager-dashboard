@@ -1,12 +1,12 @@
 import TaskBoard from "./TaskBoard";
-import TaskFormModal from "./TaskFormModal";
-import DeleteConfirmModal from "./DeleteConfirmModal";
-import TaskFilters from "./controls/TaskControls";
-import { useTasks } from "../context/TaskContext";
+import { useTasks } from "../../context/TaskContext";
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import type { FilterParams, Task } from "../types/task";
-import CustomButton from "./ui/CustomButton";
+import type { FilterParams, Task } from "../../types/task";
+import CustomButton from "../common/CustomButton";
+import TaskFilters from "../filters/TaskControls";
+import TaskFormModal from "../modals/TaskFormModal";
+import DeleteConfirmModal from "../modals/DeleteConfirmModal";
 
 const TASKS_PER_PAGE = 5;
 
@@ -134,6 +134,7 @@ export default function Tasks() {
 
             <TaskFormModal open={openFormModal} initialData={selectedTask} onClose={() => { setOpenFormModal(false); setSelectedTask(undefined); }} />
             <DeleteConfirmModal open={openDeleteModal} onClose={() => setOpenDeleteModal(false)} onConfirm={handleDelete} />
+
         </>
     );
 }

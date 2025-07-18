@@ -1,5 +1,5 @@
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import CustomButton from "./ui/CustomButton";
+import CustomButton from "../common/CustomButton";
 
 interface DeleteModalProps {
     open: boolean;

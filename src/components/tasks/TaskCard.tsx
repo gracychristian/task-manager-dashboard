@@ -1,8 +1,8 @@
 import { Calendar, Edit, Trash2 } from "lucide-react";
 import { IconButton } from "@mui/material";
-import TagBadge from "./ui/TagBadge";
-import { statusConfig, priorityConfig } from "../constants/constant";
-import type { Task } from "../types/task";
+import type { Task } from "../../types/task";
+import TagBadge from "../common/TagBadge";
+import { priorityConfig, statusConfig } from "../../constants/constant";
 
 interface TaskCardProps {
     task: Task;

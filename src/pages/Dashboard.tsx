@@ -1,5 +1,5 @@
-import DashboardHeader from "../components/DashboardHeader";
-import Tasks from "../components/Tasks";
+import DashboardHeader from "../components/layout/DashboardHeader";
+import Tasks from "../components/tasks/Tasks";
 
 const Dashboard = () => {
     return (

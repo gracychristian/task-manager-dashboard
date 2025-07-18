@@ -7,14 +7,14 @@ import {
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import InputField from './ui/InputField';
-import { useTasks } from '../context/TaskContext';
-import type { Task } from '../types/task';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { X } from 'lucide-react';
-import { priorityOptions, statusOptions } from '../constants/constant';
-import CustomButton from './ui/CustomButton';
+import type { Task } from '../../types/task';
+import { useTasks } from '../../context/TaskContext';
+import InputField from '../common/InputField';
+import { priorityOptions, statusOptions } from '../../constants/constant';
+import CustomButton from '../common/CustomButton';
 
 type FormModalProps = {
     open: boolean;
