@@ -1,4 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import CustomButton from "./ui/CustomButton";
 
 interface DeleteModalProps {
     open: boolean;
@@ -16,20 +17,22 @@ const DeleteConfirmModal = ({ open, onClose, onConfirm }: DeleteModalProps) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button
+                <CustomButton
                     onClick={onClose}
                     variant="outlined"
-                    className="normal-case px-6 py-4 text-gray-600 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 rounded-lg font-medium"
+                    className="text-gray-600 border-gray-300 hover:bg-gray-50 hover:border-gray-400 font-medium"
                 >
                     Cancel
-                </Button>
-                <Button
+                </CustomButton>
+
+
+                <CustomButton
                     variant="contained"
                     onClick={onConfirm}
-                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white  px-6 py-4 rounded-lg font-medium transition-all duration-200"
+                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-4 rounded-lg font-medium transition-all duration-200"
                 >
                     Delete
-                </Button>
+                </CustomButton>
             </DialogActions>
         </Dialog>
     );

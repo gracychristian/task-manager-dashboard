@@ -9,6 +9,7 @@ type Props = {
     tasks: Task[];
     page: number;
     totalPages: number;
+    totalTasks: number;
     onPageChange: (newPage: number) => void;
     onEdit: (task: Task) => void;
     onDelete: (id: string) => void;
@@ -18,7 +19,7 @@ type Props = {
 };
 
 export default function TaskColumn({
-    columnId, title, colorClass, tasks, page, totalPages,
+    columnId, title, colorClass, tasks, page, totalPages, totalTasks,
     onPageChange, onEdit, onDelete, onDragStart, onDrop, isOverdue
 }: Props) {
     return (
@@ -30,12 +31,12 @@ export default function TaskColumn({
             <div className="flex justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
                 <span className="text-sm font-medium px-2 py-1 rounded-full bg-white text-gray-700">
-                    {tasks.length}
+                    {totalTasks}
                 </span>
             </div>
 
             <div className="flex-1 overflow-y-auto space-y-3 pr-1 hide-scrollbar">
-                {tasks.length === 0 ? (
+                {totalTasks === 0 ? (
                     <p className="text-gray-500 text-center py-8">No tasks yet</p>
                 ) : (
                     tasks.map((task) => (

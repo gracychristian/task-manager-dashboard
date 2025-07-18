@@ -3,10 +3,11 @@ import { Filter, X } from 'lucide-react';
 import { useTasks } from '../../context/TaskContext';
 import { priorityOptions, statusOptions } from '../../constants/constant';
 import type { TaskPriority, TaskStatus } from '../../types/task';
-import { Button, Card, CardContent, CardHeader, FormLabel, IconButton, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, FormLabel, IconButton, Typography } from '@mui/material';
 import SearchField from '../ui/SearchField';
 import DatePickerField from '../ui/DatePickerField';
 import FilterSelect from './FilterSelect';
+import CustomButton from '../ui/CustomButton';
 
 export const TaskFilters: React.FC = () => {
     const {
@@ -36,23 +37,24 @@ export const TaskFilters: React.FC = () => {
                     </IconButton>
                 }
                 action={
-                    <Button
+                    <CustomButton
                         variant="text"
                         size="small"
                         startIcon={<X className="h-4 w-4 text-gray-500" />}
+                        onClick={clearFilters}
+                        className="text-sm"
                         sx={{
-                            color: 'gray.500',
+                            color: '#6B7280', // Tailwind's gray-500
                             '&:hover': {
-                                color: 'gray.700',
+                                color: '#374151', // Tailwind's gray-700
                                 backgroundColor: 'rgba(0,0,0,0.04)',
                             },
                             textTransform: 'none',
                             fontSize: '0.875rem',
                         }}
-                        onClick={clearFilters}
                     >
                         Clear all
-                    </Button>
+                    </CustomButton>
                 }
                 title={
                     <Typography

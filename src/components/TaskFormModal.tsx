@@ -3,7 +3,6 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Button,
     IconButton,
 } from '@mui/material';
 import { useFormik } from 'formik';
@@ -15,6 +14,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { X } from 'lucide-react';
 import { priorityOptions, statusOptions } from '../constants/constant';
+import CustomButton from './ui/CustomButton';
 
 type FormModalProps = {
     open: boolean;
@@ -176,21 +176,21 @@ const TaskFormModal = ({ open, initialData, onClose }: FormModalProps) => {
 
                 <DialogActions className="!p-4 bg-white border-t border-gray-100">
                     <div className="flex justify-end space-x-3 w-full gap-4">
-                        <Button
+                        <CustomButton
                             onClick={onClose}
                             variant="outlined"
-                            className="normal-case px-6 py-4 text-gray-600 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 rounded-lg font-medium"
+                            className="text-gray-600 border-gray-300 hover:bg-gray-50 hover:border-gray-400 font-medium"
                         >
                             Cancel
-                        </Button>
+                        </CustomButton>
 
-                        <Button
+                        <CustomButton
                             type="submit"
                             variant="contained"
                             className="normal-case px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transition-all duration-200 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:scale-105"
                         >
                             {initialData ? 'Update Task' : 'Add Task'}
-                        </Button>
+                        </CustomButton>
 
                     </div>
                 </DialogActions>

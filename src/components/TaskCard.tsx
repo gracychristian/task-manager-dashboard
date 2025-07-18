@@ -25,13 +25,13 @@ const TaskCard = ({
             key={task.id}
             draggable
             onDragStart={(e) => onDragStart(e, task)}
-            className="py-3 bg-white rounded-xl shadow-sm border hover:shadow-md transition cursor-grab"
+            className="py-3 bg-white rounded-xl shadow-md border border-gray-200 hover:shadow-md transition cursor-grab"
         >
             <div className="p-4">
                 <div className="flex justify-between">
-                    <h3 className="text-base font-semibold text-gray-900">
+                    <h2 className="text-xl font-bold text-gray-900">
                         {task.title}
-                    </h3>
+                    </h2>
                     <div className="flex gap-1">
                         <IconButton
                             onClick={() => onEdit(task)}
@@ -60,7 +60,7 @@ const TaskCard = ({
                     />
                 </div>
 
-                <p className="text-sm text-gray-600 mb-2 text-left">
+                <p className="text-lg text-gray-600 text-left my-4">
                     {task.description}
                 </p>
 

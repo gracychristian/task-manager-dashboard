@@ -40,6 +40,7 @@ export default function TaskBoard({
             {columns.map((col) => {
                 const paginatedTasks = getpaginatedTasksTasks(col.id);
                 const totalPages = Math.ceil(getTasksByStatus(col.id).length / tasksPerPage);
+                const totalTaskByStatus = getTasksByStatus(col.id).length
                 const page = currentPage[col.id];
 
                 return (
@@ -57,6 +58,7 @@ export default function TaskBoard({
                         onDragStart={onDragStart}
                         onDrop={onDrop}
                         isOverdue={isOverdue}
+                        totalTasks={totalTaskByStatus}
                     />
                 );
             })}

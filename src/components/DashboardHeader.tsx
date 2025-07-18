@@ -1,7 +1,7 @@
-import { Button } from "@mui/material";
 import { LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import CustomButton from "./ui/CustomButton";
 
 const DashboardHeader = () => {
     const { user, logout } = useAuth();
@@ -24,11 +24,11 @@ const DashboardHeader = () => {
             <p className="text-gray-600 mt-2 ml-13">Organize and track your tasks efficiently</p>
         </div>
         <div className="flex items-center gap-4">
-            <Button
+            <CustomButton
                 onClick={handleLogout}
                 variant="contained"
                 startIcon={<LogOut className="w-5 h-5" />}
-                className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200"
+                className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium shadow-md hover:shadow-lg"
                 sx={{
                     background: 'linear-gradient(45deg, #ef4444 30%, #dc2626 90%)',
                     '&:hover': {
@@ -38,11 +38,11 @@ const DashboardHeader = () => {
                     '&:active': {
                         transform: 'scale(0.95)',
                     },
-                    textTransform: 'none',
                 }}
             >
                 Logout
-            </Button>
+            </CustomButton>
+
         </div>
     </div>);
 }

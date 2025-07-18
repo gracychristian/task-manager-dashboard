@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import InputField from "../components/ui/InputField";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import CustomButton from "../components/ui/CustomButton";
 
 interface AuthFormProps {
     mode: "login" | "signup";
@@ -98,10 +98,10 @@ const AuthForm = ({ mode, onSubmit }: AuthFormProps) => {
                         </div>
                     </div>
 
-                    <Button
+                    <CustomButton
                         type="submit"
-                        disabled={!(formik.isValid && formik.dirty)}
                         fullWidth
+                        disabled={!(formik.isValid && formik.dirty)}
                         sx={{
                             background: 'linear-gradient(to right, #2563eb, #7c3aed)',
                             color: 'white',
@@ -126,9 +126,8 @@ const AuthForm = ({ mode, onSubmit }: AuthFormProps) => {
                             },
                         }}
                     >
-                        {mode === "login" ? "Login" : "Sign up"}
-                    </Button>
-
+                        {mode === 'login' ? 'Login' : 'Sign up'}
+                    </CustomButton>
 
                 </div>
 

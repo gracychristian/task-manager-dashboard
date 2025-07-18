@@ -5,10 +5,10 @@ import TaskFilters from "./controls/TaskControls";
 import { useTasks } from "../context/TaskContext";
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import { Button } from "@mui/material";
 import type { FilterParams, Task } from "../types/task";
+import CustomButton from "./ui/CustomButton";
 
-const TASKS_PER_PAGE = 3;
+const TASKS_PER_PAGE = 5;
 
 export default function Tasks() {
     const { tasks, updateTask, deleteTask, searchTerm, statusFilter, priorityFilter, dateRangeFilter } = useTasks();
@@ -42,11 +42,11 @@ export default function Tasks() {
         }
 
         if (status) {
-            filtered = filtered.filter(({status: s}) => s?.value === status);
+            filtered = filtered.filter(({ status: s }) => s?.value === status);
         }
 
         if (priority) {
-            filtered = filtered.filter(({priority: p}) => p?.value === priority);
+            filtered = filtered.filter(({ priority: p }) => p?.value === priority);
         }
 
         if (fromDate && toDate) {
@@ -98,15 +98,14 @@ export default function Tasks() {
         <>
             <div className="gap-4 mb-8">
                 <TaskFilters />
-                <Button
+                <CustomButton
                     onClick={() => setOpenFormModal(true)}
                     variant="contained"
                     startIcon={<Plus className="w-4 h-4" />}
                     className="px-6 py-2 rounded-lg font-medium shadow-md"
-                    sx={{ /* gradient styling */ }}
                 >
                     Add Task
-                </Button>
+                </CustomButton>
             </div>
 
             <TaskBoard
