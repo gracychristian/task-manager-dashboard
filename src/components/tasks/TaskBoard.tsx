@@ -1,19 +1,6 @@
 import { columns } from "../../constants/constant";
-import type { Task } from "../../types/task";
+import type { TaskBoardProps } from "../../types/task";
 import TaskColumn from "./TaskColumn";
-
-
-type Props = {
-    filteredTasks: Task[];
-    currentPage: Record<string, number>;
-    tasksPerPage: number;
-    onPageChange: (status: string, newPage: number) => void;
-    onEdit: (task: Task) => void;
-    onDelete: (id: string) => void;
-    onDragStart: (e: React.DragEvent, task: Task) => void;
-    onDrop: (e: React.DragEvent, status: string) => void;
-    isOverdue: (dueDate: string, status: string) => boolean;
-};
 
 export default function TaskBoard({
     filteredTasks,
@@ -25,7 +12,7 @@ export default function TaskBoard({
     onDragStart,
     onDrop,
     isOverdue
-}: Props) {
+}: TaskBoardProps) {
     const getTasksByStatus = (status: string) =>
         filteredTasks.filter(task => task.status?.value === status);
 

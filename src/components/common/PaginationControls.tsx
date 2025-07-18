@@ -20,7 +20,7 @@ const PaginationControls = ({ page, totalPages, onPageChange }: PaginationContro
     if (totalPages <= 1) return null;
 
     return (
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+        <div className="flex items-center justify-between pt-4 border-t border-gray-200 mt-auto">
             <CustomButton
                 onClick={() => onPageChange(page - 1)}
                 disabled={page === 1}

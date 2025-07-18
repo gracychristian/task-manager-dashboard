@@ -5,19 +5,8 @@ import {
   MenuItem,
   type SelectChangeEvent,
 } from "@mui/material";
+import type { FilterSelectProps } from "../../types/filters";
 
-type Option = {
-  label: string;
-  value: string;
-};
-
-type FilterSelectProps = {
-  label: string;
-  options: Option[];
-  value?: string;
-  onChange: (value: string) => void;
-  clearable?: boolean;
-};
 
 const FilterSelect = ({
   label,

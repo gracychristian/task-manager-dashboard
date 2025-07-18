@@ -13,6 +13,7 @@ interface AuthFormProps {
 
 const AuthForm = ({ mode, onSubmit }: AuthFormProps) => {
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
 
     const formik = useFormik({
@@ -20,16 +21,21 @@ const AuthForm = ({ mode, onSubmit }: AuthFormProps) => {
             username: '',
             email: '',
             password: '',
+            confirmPassword: '',
         },
         validationSchema: Yup.object({
             ...(mode === "signup" && {
                 username: Yup.string().required('Username is required'),
+                confirmPassword: Yup.string()
+                    .oneOf([Yup.ref('password')], 'Passwords must match')
+                    .required('Confirm Password is required'),
             }),
             email: Yup.string().email('Invalid email address').required('Email is required'),
             password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
         }),
         onSubmit: (values) => {
-            const success = onSubmit(values);
+            const { confirmPassword, ...formValues } = values;
+            const success = onSubmit(formValues);
             if (success) {
                 navigate("/dashboard");
             } else {
@@ -61,8 +67,10 @@ const AuthForm = ({ mode, onSubmit }: AuthFormProps) => {
                         <div className="space-y-2">
                             <div className="relative">
                                 <InputField
+                                    required
                                     name="username"
                                     label="Username"
+                                    placeholder="Username"
                                     formik={formik}
                                     icon={<User className="h-4 w-4 text-gray-400" />}
                                 />
@@ -72,9 +80,11 @@ const AuthForm = ({ mode, onSubmit }: AuthFormProps) => {
                     <div className="space-y-2">
                         <div className="relative">
                             <InputField
+                                required
                                 name="email"
                                 label="Email Address"
                                 type="email"
+                                placeholder="Email"
                                 formik={formik}
                                 icon={<Mail className="h-4 w-4 text-gray-400" />}
                             />
@@ -83,8 +93,10 @@ const AuthForm = ({ mode, onSubmit }: AuthFormProps) => {
                     <div className="space-y-2">
                         <div className="relative">
                             <InputField
+                                required
                                 name="password"
                                 label="Password"
+                                placeholder="Password"
                                 type={showPassword ? 'text' : 'password'}
                                 formik={formik}
                                 icon={<Lock className="h-4 w-4 text-gray-400" />}
@@ -97,6 +109,27 @@ const AuthForm = ({ mode, onSubmit }: AuthFormProps) => {
                             />
                         </div>
                     </div>
+                    {mode === "signup" && (
+                        <div className="space-y-2">
+                            <div className="relative">
+                                <InputField
+                                    required
+                                    name="confirmPassword"
+                                    label="Confirm Password"
+                                    placeholder="Confirm Password"
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    formik={formik}
+                                    icon={<Lock className="h-4 w-4 text-gray-400" />}
+                                    endIcon={showConfirmPassword ? (
+                                        <EyeOff className="h-4 w-4 text-gray-500" />
+                                    ) : (
+                                        <Eye className="h-4 w-4 text-gray-500" />
+                                    )}
+                                    onEndIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                />
+                            </div>
+                        </div>
+                    )}
 
                     <CustomButton
                         type="submit"

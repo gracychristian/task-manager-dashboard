@@ -3,20 +3,7 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import { MenuItem } from '@mui/material';
-
-interface InputFieldProps {
-    name: string;
-    label: string;
-    type?: string;
-    formik: any
-    icon?: React.ReactNode;
-    endIcon?: React.ReactNode;
-    onEndIconClick?: () => void;
-    multiline?: boolean;
-    rows?: number;
-    select?: boolean;
-    options?: { label: string; value: string }[];
-}
+import type { InputFieldProps } from '../../types/props';
 
 const InputField = ({
     name,
@@ -28,11 +15,9 @@ const InputField = ({
     onEndIconClick,
     ...props
 }: InputFieldProps) => {
-    const hasError = formik.touched[name] && Boolean(formik.errors[name]?.value || formik.errors[name]);
-    const helperText =
-        formik.touched[name] && typeof formik.errors[name] === 'object'
-            ? formik.errors[name]?.value
-            : formik.errors[name];
+    const hasError = formik.touched[name] && Boolean(formik.errors[name]);
+    const helperText = formik.touched[name] && formik.errors[name];
+
 
     return (
         <TextField
@@ -42,6 +27,8 @@ const InputField = ({
             name={name}
             label={label}
             type={type}
+            required={props.required}
+            placeholder={props.placeholder}
             value={props.select ? formik.values[name]?.value || '' : formik.values[name]}
             onChange={(e) => {
                 const selectedValue = e.target.value;

@@ -1,12 +1,9 @@
 import { TextField, IconButton } from "@mui/material";
 import { X } from "lucide-react";
 import { useState } from "react";
+import type { DateRangeProps } from "../../types/props";
 
-type Props = {
-  onChange: (from: string, to: string) => void;
-};
-
-const DateRangePicker = ({ onChange }: Props) => {
+const DateRangePicker = ({ onChange }: DateRangeProps) => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 

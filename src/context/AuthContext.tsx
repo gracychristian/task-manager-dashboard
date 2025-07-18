@@ -1,37 +1,29 @@
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
-
-type User = {
-    username: string
-    email: string
-    password: string
-}
-type AuthContextType = {
-    user: User | null,
-    login: (email: string, password: string) => boolean
-    signup: (username: string, email: string, password: string) => boolean
-    logout: () => void
-}
+import type { User } from '../types/auth';
+import type { AuthContextType } from '../types/context';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const storedUser = localStorage.getItem("loggedInUser")
         if (storedUser) setUser(JSON.parse(storedUser))
+        setIsLoading(false);
     }, [])
 
     const login = (email: string, password: string) => {
         const users = JSON.parse(localStorage.getItem("users") || "[]");
-        const foundUser = users.find((u: User) => u.email === email && u.password === password)
+        const foundUser = users.find((u: User) => u.email === email && u.password === password);
         if (foundUser) {
             setUser(foundUser);
-            localStorage.setItem("foundUser", JSON.stringify(foundUser))
+            localStorage.setItem("loggedInUser", JSON.stringify(foundUser));
             return true;
         }
-        return false
-    }
+        return false;
+    };
 
     const signup = (username: string, email: string, password: string) => {
         const users = JSON.parse(localStorage.getItem("users") || "[]") as User[];
@@ -46,13 +38,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return true;
     };
 
+
     const logout = () => {
         setUser(null);
         localStorage.removeItem("loggedInUser");
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, signup, logout }} >
+        <AuthContext.Provider value={{ user, login, signup, logout, isLoading }} >
             {children}
         </AuthContext.Provider>
     )

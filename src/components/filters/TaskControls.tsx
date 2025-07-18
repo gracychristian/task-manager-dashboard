@@ -29,7 +29,7 @@ export const TaskFilters: React.FC = () => {
     };
 
     return (
-        <Card className="mx-auto px-2 pb-3bg-white shadow-lg border border-gray-100 rounded-2xl max-w-4xl w-full overflow-hidden backdrop-blur-sm">
+        <Card className="mx-auto px-2 pb-3bg-white shadow-lg border border-gray-100 rounded-2xl w-full overflow-hidden backdrop-blur-sm">
             <CardHeader
                 avatar={
                     <IconButton aria-label="filter">
@@ -44,9 +44,9 @@ export const TaskFilters: React.FC = () => {
                         onClick={clearFilters}
                         className="text-sm"
                         sx={{
-                            color: '#6B7280', // Tailwind's gray-500
+                            color: '#6B7280',
                             '&:hover': {
-                                color: '#374151', // Tailwind's gray-700
+                                color: '#374151',
                                 backgroundColor: 'rgba(0,0,0,0.04)',
                             },
                             textTransform: 'none',

@@ -1,27 +1,11 @@
 import TaskCard from "./TaskCard";
-import type { Task } from "../../types/task";
 import PaginationControls from "../common/PaginationControls";
-
-type Props = {
-    columnId: string;
-    title: string;
-    colorClass: string;
-    tasks: Task[];
-    page: number;
-    totalPages: number;
-    totalTasks: number;
-    onPageChange: (newPage: number) => void;
-    onEdit: (task: Task) => void;
-    onDelete: (id: string) => void;
-    onDragStart: (e: React.DragEvent, task: Task) => void;
-    onDrop: (e: React.DragEvent, columnId: string) => void;
-    isOverdue: (dueDate: string, status: string) => boolean;
-};
+import type { TaskColumnProps } from "../../types/task";
 
 export default function TaskColumn({
     columnId, title, colorClass, tasks, page, totalPages, totalTasks,
     onPageChange, onEdit, onDelete, onDragStart, onDrop, isOverdue
-}: Props) {
+}: TaskColumnProps) {
     return (
         <div
             className={`${colorClass} border rounded-lg p-4 min-h-96 w-full lg:flex-1 flex flex-col max-h-[40rem]`}
@@ -35,7 +19,7 @@ export default function TaskColumn({
                 </span>
             </div>
 
-            <div className="flex-1 overflow-y-auto space-y-3 pr-1 hide-scrollbar">
+            <div className="flex-1 overflow-y-auto space-y-3 pb-3 hide-scrollbar">
                 {totalTasks === 0 ? (
                     <p className="text-gray-500 text-center py-8">No tasks yet</p>
                 ) : (

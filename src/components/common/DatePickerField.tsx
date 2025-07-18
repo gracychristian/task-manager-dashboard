@@ -20,7 +20,7 @@ const DatePickerField = ({ label, value, onChange }: DatePickerProps) => {
                     fullWidth: true,
                     size: 'small',
                     variant: 'outlined',
-                    className: '!bg-secondary/50 !border !border-border !rounded-md',
+                    className: '!bg-secondary/50 !rounded-md',
                 } as TextFieldProps,
             }}
         />
